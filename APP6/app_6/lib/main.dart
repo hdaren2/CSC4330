@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'PFT Scavenger Hunt',
+      title: 'Flutter 13 Pages',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -35,14 +35,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     (index) => TextEditingController(),
   );
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-  final List<String> _correctCodes = [
-    "1344",
-    "1375",
-    "1269",
-    "1200",
-    "2215",
-    "2108"
-  ];
+  final List<String> _correctCodes = ["1344", "1375", "1269", "1200", "2215", "2108"];
   final List<String> _pageTitles = [
     "Welcome to the Patrick F Taylor Scavenger Hunt. \nPlease enter the room number for the SECRET CODE\nas we procced.",
     "For Place #1, you must go to the room of robotics, with a orange hue",
@@ -85,8 +78,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     return Scaffold(
       body: PageView.builder(
         controller: _controller,
-        physics:
-            const NeverScrollableScrollPhysics(), // Disable swipe navigation
+        physics: const NeverScrollableScrollPhysics(), // Disable swipe navigation
         itemCount: 13,
         itemBuilder: (context, index) {
           return PageContent(
@@ -95,8 +87,9 @@ class _PageNavigatorState extends State<PageNavigator> {
             controller: _controller,
             inputController: index % 2 == 1 ? _controllers[index ~/ 2] : null,
             isCodeCorrect: index % 2 == 1 ? _isCodeCorrect[index ~/ 2] : true,
-            onCodeChanged:
-                index % 2 == 1 ? (value) => _validateCode(index, value) : null,
+            onCodeChanged: index % 2 == 1
+                ? (value) => _validateCode(index, value)
+                : null,
           );
         },
       ),
@@ -129,7 +122,7 @@ class PageContent extends StatelessWidget {
       children: [
         Image.asset(
           'assets/page_${index + 1}.jpg', // Ensure you have 13 different images named page_1.jpg to page_13.jpg
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
         Container(
           color: Colors.black.withOpacity(0.3),
