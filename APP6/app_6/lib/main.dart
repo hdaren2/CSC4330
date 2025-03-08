@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter 13 Pages',
+      title: 'PFT Scavenger Hunt',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -35,7 +35,14 @@ class _PageNavigatorState extends State<PageNavigator> {
     (index) => TextEditingController(),
   );
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-  final List<String> _correctCodes = ["1234", "5678", "9101", "1121", "3141", "5161"];
+  final List<String> _correctCodes = [
+    "1234",
+    "5678",
+    "9101",
+    "1121",
+    "3141",
+    "5161"
+  ];
   final List<String> _pageTitles = [
     "Welcome",
     "Enter Code 1",
@@ -78,7 +85,8 @@ class _PageNavigatorState extends State<PageNavigator> {
     return Scaffold(
       body: PageView.builder(
         controller: _controller,
-        physics: const NeverScrollableScrollPhysics(), // Disable swipe navigation
+        physics:
+            const NeverScrollableScrollPhysics(), // Disable swipe navigation
         itemCount: 13,
         itemBuilder: (context, index) {
           return PageContent(
@@ -87,9 +95,8 @@ class _PageNavigatorState extends State<PageNavigator> {
             controller: _controller,
             inputController: index % 2 == 1 ? _controllers[index ~/ 2] : null,
             isCodeCorrect: index % 2 == 1 ? _isCodeCorrect[index ~/ 2] : true,
-            onCodeChanged: index % 2 == 1
-                ? (value) => _validateCode(index, value)
-                : null,
+            onCodeChanged:
+                index % 2 == 1 ? (value) => _validateCode(index, value) : null,
           );
         },
       ),
@@ -122,7 +129,7 @@ class PageContent extends StatelessWidget {
       children: [
         Image.asset(
           'assets/page_${index + 1}.jpg', // Ensure you have 13 different images named page_1.jpg to page_13.jpg
-          fit: BoxFit.cover,
+          fit: BoxFit.contain,
         ),
         Container(
           color: Colors.black.withOpacity(0.3),
