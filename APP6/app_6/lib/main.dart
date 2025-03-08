@@ -35,21 +35,21 @@ class _PageNavigatorState extends State<PageNavigator> {
     (index) => TextEditingController(),
   );
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-  final List<String> _correctCodes = ["1234", "5678", "9101", "1121", "3141", "5161"];
+  final List<String> _correctCodes = ["1344", "1375", "1269", "1200", "2215", "2108"];
   final List<String> _pageTitles = [
-    "Welcome",
-    "Enter Code 1",
-    "Introduction",
-    "Enter Code 2",
-    "Details",
-    "Enter Code 3",
-    "More Info",
-    "Enter Code 4",
-    "Final Steps",
-    "Enter Code 5",
-    "Conclusion",
-    "Enter Code 6",
-    "Thank You"
+    "Welcome to the Patrick F Taylor Scavenger Hunt. \nPlease enter the room number for the SECRET CODE\nas we procced.",
+    "For Place #1, you must go to the room of robotics, with a orange hue",
+    "Welcome to the home of the Bengal Bots!",
+    "Need a quick bite, where coffee is in sight",
+    "Welcome to Panera, our proud food service of choice here in the mechanical building",
+    "Where blue and red meet, and no gas leaks.",
+    "Welcome to the chevron center",
+    "Near a entrance door, find sponsors galore.",
+    "These are the proud sponsors of our beloved pft",
+    "On the second floor, we drive and we floor",
+    "Here we find a car that is tested for VR",
+    "For building your resume with pro's who care, near studying poeple in a quite lare",
+    "Welcome to Lisa Hibners office, where you can troubleshoot career problems and build your resume"
   ];
 
   @override
