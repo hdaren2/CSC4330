@@ -36,12 +36,12 @@ class _PageNavigatorState extends State<PageNavigator> {
   );
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
   final List<String> _correctCodes = [
-    "1234",
-    "5678",
-    "9101",
-    "1121",
-    "3141",
-    "5161"
+    "1344",
+    "1375",
+    "1269",
+    "1200",
+    "2215",
+    "2108"
   ];
   final List<String> _pageTitles = [
     "Welcome to the Patrick F Taylor Scavenger Hunt. \nPlease enter the room number for the SECRET CODE\nas we procced.",
