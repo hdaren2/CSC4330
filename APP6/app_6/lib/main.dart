@@ -35,9 +35,6 @@ class _PageNavigatorState extends State<PageNavigator> {
     (index) => TextEditingController(),
   );
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-<<<<<<< HEAD
-  final List<String> _correctCodes = ["1344", "1375", "1269", "1200", "2215", "2108"];
-=======
   final List<String> _correctCodes = [
     "1234",
     "5678",
@@ -46,7 +43,6 @@ class _PageNavigatorState extends State<PageNavigator> {
     "3141",
     "5161"
   ];
->>>>>>> f92f68ba7f1e7e72aefdb5a7cca16eabb29a635b
   final List<String> _pageTitles = [
     "Welcome to the Patrick F Taylor Scavenger Hunt. \nPlease enter the room number for the SECRET CODE\nas we procced.",
     "For Place #1, you must go to the room of robotics, with a orange hue",
