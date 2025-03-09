@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter 13 Pages',
+      title: 'PFT Scavenger Hunt',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -30,13 +30,12 @@ class PageNavigator extends StatefulWidget {
 
 class _PageNavigatorState extends State<PageNavigator> {
   final PageController _controller = PageController();
-  final List<TextEditingController> _controllers = List.generate(
-    6,
-    (index) => TextEditingController(),
-  );
+  final List<TextEditingController> _controllers =
+      List.generate(6, (index) => TextEditingController());
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-  final List<int> _interestedCounts = List.generate(6, (index) => 0);
-  final List<int> _notInterestedCounts = List.generate(6, (index) => 0);
+
+  // Track interest selections (true = interested, false = not interested, null = not selected)
+  final List<bool?> _interestSelections = List.generate(6, (index) => null);
 
   final List<String> _correctCodes = [
     "1344",
@@ -75,14 +74,12 @@ class _PageNavigatorState extends State<PageNavigator> {
     }
   }
 
-  void _incrementInterest(int index, bool interested) {
-    setState(() {
-      if (interested) {
-        _interestedCounts[index ~/ 2]++;
-      } else {
-        _notInterestedCounts[index ~/ 2]++;
-      }
-    });
+  void _setInterest(int index, bool interested) {
+    if ((index - 1) ~/ 2 < _interestSelections.length) {
+      setState(() {
+        _interestSelections[(index - 1) ~/ 2] = interested;
+      });
+    }
   }
 
   @override
@@ -93,12 +90,12 @@ class _PageNavigatorState extends State<PageNavigator> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 14,
         itemBuilder: (context, index) {
-          if (index == 13) {
+          if (index >= 13) {
             return InterestSummaryPage(
-              interestedCounts: _interestedCounts,
-              notInterestedCounts: _notInterestedCounts,
+              interestSelections: _interestSelections,
             );
           }
+
           return PageContent(
             index: index,
             title: _pageTitles[index],
@@ -107,9 +104,17 @@ class _PageNavigatorState extends State<PageNavigator> {
             isCodeCorrect: index % 2 == 1 ? _isCodeCorrect[index ~/ 2] : true,
             onCodeChanged:
                 index % 2 == 1 ? (value) => _validateCode(index, value) : null,
-            onInterestSelected: index % 2 == 0 && index != 0
-                ? (interested) => _incrementInterest(index, interested)
+            selectedInterest: ((index - 1) ~/ 2 < _interestSelections.length &&
+                    index % 2 == 0 &&
+                    index != 0)
+                ? _interestSelections[(index - 1) ~/ 2]
                 : null,
+            onInterestSelected:
+                ((index - 1) ~/ 2 < _interestSelections.length &&
+                        index % 2 == 0 &&
+                        index != 0)
+                    ? (interested) => _setInterest(index, interested)
+                    : null,
           );
         },
       ),
@@ -125,6 +130,7 @@ class PageContent extends StatelessWidget {
   final bool isCodeCorrect;
   final ValueChanged<String>? onCodeChanged;
   final ValueChanged<bool>? onInterestSelected;
+  final bool? selectedInterest; // Track user's selection
 
   const PageContent({
     super.key,
@@ -135,6 +141,7 @@ class PageContent extends StatelessWidget {
     required this.isCodeCorrect,
     this.onCodeChanged,
     this.onInterestSelected,
+    this.selectedInterest,
   });
 
   @override
@@ -215,13 +222,19 @@ class PageContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.thumb_up, color: Colors.green),
+                      icon: Icon(Icons.thumb_up,
+                          color: selectedInterest == true
+                              ? Colors.green
+                              : Colors.white),
                       onPressed: () => onInterestSelected!(true),
                     ),
                     const Text('Interested',
                         style: TextStyle(color: Colors.white)),
                     IconButton(
-                      icon: const Icon(Icons.thumb_down, color: Colors.red),
+                      icon: Icon(Icons.thumb_down,
+                          color: selectedInterest == false
+                              ? Colors.red
+                              : Colors.white),
                       onPressed: () => onInterestSelected!(false),
                     ),
                     const Text('Not Interested',
@@ -237,14 +250,19 @@ class PageContent extends StatelessWidget {
 }
 
 class InterestSummaryPage extends StatelessWidget {
-  final List<int> interestedCounts;
-  final List<int> notInterestedCounts;
+  final List<bool?> interestSelections;
 
-  const InterestSummaryPage({
-    super.key,
-    required this.interestedCounts,
-    required this.notInterestedCounts,
-  });
+  // Titles for interest pages, including the final summary page
+  final List<String> interestPageNames = [
+    "Bengal Bots",
+    "Panera Bread",
+    "Chevron Center",
+    "PFT Sponsors",
+    "Traffic Research Lab",
+    "LSU Career Center Office",
+  ];
+
+  InterestSummaryPage({super.key, required this.interestSelections});
 
   @override
   Widget build(BuildContext context) {
@@ -254,15 +272,19 @@ class InterestSummaryPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Interest Summary",
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            for (int i = 0; i < interestedCounts.length; i++)
+            const Text("Interest Summary",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+            for (int i = 0; i < interestSelections.length; i++)
               Text(
-                "Page ${i * 2 + 2}: Interested: ${interestedCounts[i]}, Not Interested: ${notInterestedCounts[i]}",
+                "${interestPageNames[i]}: ${interestSelections[i] == null ? 'No Selection' : interestSelections[i]! ? 'Interested' : 'Not Interested'}",
                 style: const TextStyle(fontSize: 20),
               ),
+            // Include a final message for the last page
+            const SizedBox(height: 20),
+            const Text(
+              "Thank you for participating in the scavenger hunt!",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),
