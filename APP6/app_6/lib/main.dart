@@ -34,7 +34,6 @@ class _PageNavigatorState extends State<PageNavigator> {
       List.generate(6, (index) => TextEditingController());
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
 
-  // Track interest selections (true = interested, false = not interested, null = not selected)
   final List<bool?> _interestSelections = List.generate(6, (index) => null);
 
   final List<String> _correctCodes = [
@@ -90,7 +89,7 @@ class _PageNavigatorState extends State<PageNavigator> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 14,
         itemBuilder: (context, index) {
-          if (index >= 13) {
+          if (index == 13) {
             return InterestSummaryPage(
               interestSelections: _interestSelections,
             );
@@ -130,7 +129,7 @@ class PageContent extends StatelessWidget {
   final bool isCodeCorrect;
   final ValueChanged<String>? onCodeChanged;
   final ValueChanged<bool>? onInterestSelected;
-  final bool? selectedInterest; // Track user's selection
+  final bool? selectedInterest; 
 
   const PageContent({
     super.key,
@@ -252,7 +251,6 @@ class PageContent extends StatelessWidget {
 class InterestSummaryPage extends StatelessWidget {
   final List<bool?> interestSelections;
 
-  // Titles for interest pages, including the final summary page
   final List<String> interestPageNames = [
     "Bengal Bots",
     "Panera Bread",
@@ -267,26 +265,45 @@ class InterestSummaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Interest Summary")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text("Interest Summary",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-            for (int i = 0; i < interestSelections.length; i++)
-              Text(
-                "${interestPageNames[i]}: ${interestSelections[i] == null ? 'No Selection' : interestSelections[i]! ? 'Interested' : 'Not Interested'}",
-                style: const TextStyle(fontSize: 20),
-              ),
-            // Include a final message for the last page
-            const SizedBox(height: 20),
-            const Text(
-              "Thank you for participating in the scavenger hunt!",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/page_14.jpg', 
+              fit: BoxFit.cover,
             ),
-          ],
-        ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Interest Summary",
+                    style: TextStyle(
+                      fontSize: 28, 
+                      fontWeight: FontWeight.bold, 
+                      color: Colors.white,
+                    )),
+                for (int i = 0; i < interestSelections.length; i++)
+                  Text(
+                    "${interestPageNames[i]}: ${interestSelections[i] == null ? 'No Selection' : interestSelections[i]! ? 'Interested' : 'Not Interested'}",
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                    ),
+                  ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Thank you for participating in the scavenger hunt!",
+                  style: TextStyle(
+                    fontSize: 20, 
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
