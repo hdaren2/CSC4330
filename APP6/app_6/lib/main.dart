@@ -35,31 +35,33 @@ class _PageNavigatorState extends State<PageNavigator> {
     (index) => TextEditingController(),
   );
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-  final List<String> _correctCodes = ["1344", "1375", "1269", "1200", "2215", "2108"];
-  final List<String> _pageTitles = [
-    "Welcome to the Patrick F Taylor Scavenger Hunt. \nPlease enter the room number for the SECRET CODE\nas we procced.",
-    "For Place #1, you must go to the room of robotics, with a orange hue",
-    "Welcome to the home of the Bengal Bots!",
-    "Need a quick bite, where coffee is in sight",
-    "Welcome to Panera, our proud food service of choice here in the mechanical building",
-    "Where blue and red meet, and no gas leaks.",
-    "Welcome to the chevron center",
-    "Near a entrance door, find sponsors galore.",
-    "These are the proud sponsors of our beloved pft",
-    "On the second floor, we drive and we floor",
-    "Here we find a car that is tested for VR",
-    "For building your resume with pro's who care, near studying poeple in a quite lare",
-    "Welcome to Lisa Hibners office, where you can troubleshoot career problems and build your resume"
-  ];
+  final List<int> _interestedCounts = List.generate(6, (index) => 0);
+  final List<int> _notInterestedCounts = List.generate(6, (index) => 0);
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    super.dispose();
-  }
+  final List<String> _correctCodes = [
+    "1344",
+    "1375",
+    "1269",
+    "1200",
+    "2215",
+    "2108"
+  ];
+  final List<String> _pageTitles = [
+    "Welcome to the Patrick F. Taylor Scavenger Hunt.",
+    "Please enter the correct room number to proceed.\nYou must go to the room of robotics, with an orange glow",
+    "Welcome to the home of the Bengal Bots, LSU's Robotics Club!",
+    "Need a quick bite, where coffee is in sight",
+    "Welcome to Panera Bread, the proud food service of choice at PFT",
+    "Where blue and red meet, and no gas leaks.",
+    "Welcome to the Chevron Center",
+    "Near an entrance door, find sponsors galore (Room # to the right).",
+    "These are the proud sponsors of our beloved PFT",
+    "On the second floor, we drive and we floor",
+    "Here we find the Traffic Research and Visualization Engineering Lab",
+    "For building your resume with pros who care, near studying people in a quiet chair",
+    "Welcome to Lisa Hibner's office, where you can troubleshoot career problems and build your resume",
+    "Final Interest Summary"
+  ];
 
   void _validateCode(int index, String value) {
     if (value == _correctCodes[index ~/ 2]) {
@@ -73,22 +75,40 @@ class _PageNavigatorState extends State<PageNavigator> {
     }
   }
 
+  void _incrementInterest(int index, bool interested) {
+    setState(() {
+      if (interested) {
+        _interestedCounts[index ~/ 2]++;
+      } else {
+        _notInterestedCounts[index ~/ 2]++;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView.builder(
         controller: _controller,
-        physics: const NeverScrollableScrollPhysics(), // Disable swipe navigation
-        itemCount: 13,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 14,
         itemBuilder: (context, index) {
+          if (index == 13) {
+            return InterestSummaryPage(
+              interestedCounts: _interestedCounts,
+              notInterestedCounts: _notInterestedCounts,
+            );
+          }
           return PageContent(
             index: index,
             title: _pageTitles[index],
             controller: _controller,
             inputController: index % 2 == 1 ? _controllers[index ~/ 2] : null,
             isCodeCorrect: index % 2 == 1 ? _isCodeCorrect[index ~/ 2] : true,
-            onCodeChanged: index % 2 == 1
-                ? (value) => _validateCode(index, value)
+            onCodeChanged:
+                index % 2 == 1 ? (value) => _validateCode(index, value) : null,
+            onInterestSelected: index % 2 == 0 && index != 0
+                ? (interested) => _incrementInterest(index, interested)
                 : null,
           );
         },
@@ -104,6 +124,7 @@ class PageContent extends StatelessWidget {
   final TextEditingController? inputController;
   final bool isCodeCorrect;
   final ValueChanged<String>? onCodeChanged;
+  final ValueChanged<bool>? onInterestSelected;
 
   const PageContent({
     super.key,
@@ -113,6 +134,7 @@ class PageContent extends StatelessWidget {
     this.inputController,
     required this.isCodeCorrect,
     this.onCodeChanged,
+    this.onInterestSelected,
   });
 
   @override
@@ -121,7 +143,7 @@ class PageContent extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         Image.asset(
-          'assets/page_${index + 1}.jpg', // Ensure you have 13 different images named page_1.jpg to page_13.jpg
+          'assets/page_${index + 1}.jpg',
           fit: BoxFit.cover,
         ),
         Container(
@@ -133,22 +155,13 @@ class PageContent extends StatelessWidget {
             children: [
               Text(
                 title,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
-                  fontSize: 28,
+                  fontSize: 24,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              if (index == 0)
-                ElevatedButton(
-                  onPressed: () {
-                    controller.nextPage(
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                  },
-                  child: const Text('Next'),
-                ),
               if (inputController != null)
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -166,42 +179,93 @@ class PageContent extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         borderSide: BorderSide.none,
                       ),
-                      hintText: 'Enter 4-digit code',
+                      hintText: 'Enter 4-digit room number',
                       hintStyle: const TextStyle(color: Colors.white70),
                     ),
                     onChanged: onCodeChanged,
                   ),
                 ),
-              if (index != 0)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  if (index > 0)
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.previousPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: const Text('Previous'),
+                    ),
+                  if (isCodeCorrect || index == 0)
+                    ElevatedButton(
+                      onPressed: () {
+                        controller.nextPage(
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInOut,
+                        );
+                      },
+                      child: const Text('Continue'),
+                    ),
+                ],
+              ),
+              if (onInterestSelected != null)
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (index > 0)
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.previousPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        child: const Text('Previous'),
-                      ),
-                    if (index < 12 && (index % 2 == 0 || isCodeCorrect))
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        child: const Text('Next'),
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.thumb_up, color: Colors.green),
+                      onPressed: () => onInterestSelected!(true),
+                    ),
+                    const Text('Interested',
+                        style: TextStyle(color: Colors.white)),
+                    IconButton(
+                      icon: const Icon(Icons.thumb_down, color: Colors.red),
+                      onPressed: () => onInterestSelected!(false),
+                    ),
+                    const Text('Not Interested',
+                        style: TextStyle(color: Colors.white)),
                   ],
                 ),
             ],
           ),
         ),
       ],
+    );
+  }
+}
+
+class InterestSummaryPage extends StatelessWidget {
+  final List<int> interestedCounts;
+  final List<int> notInterestedCounts;
+
+  const InterestSummaryPage({
+    super.key,
+    required this.interestedCounts,
+    required this.notInterestedCounts,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Interest Summary")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Interest Summary",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            for (int i = 0; i < interestedCounts.length; i++)
+              Text(
+                "Page ${i * 2 + 2}: Interested: ${interestedCounts[i]}, Not Interested: ${notInterestedCounts[i]}",
+                style: const TextStyle(fontSize: 20),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
