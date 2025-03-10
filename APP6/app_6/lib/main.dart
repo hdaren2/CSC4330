@@ -62,8 +62,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     "Final Interest Summary"
   ];
 
-  DateTime? _startTime;
-  Duration? _elapsedTime;
+  
 
   @override
   void initState() {
