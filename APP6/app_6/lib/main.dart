@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -61,6 +62,15 @@ class _PageNavigatorState extends State<PageNavigator> {
     "Final Interest Summary"
   ];
 
+  DateTime? _startTime;
+  Duration? _elapsedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTime = DateTime.now(); // Start timer when app opens
+  }
+
   void _validateCode(int index, String value) {
     if (value == _correctCodes[index ~/ 2]) {
       setState(() {
@@ -90,8 +100,10 @@ class _PageNavigatorState extends State<PageNavigator> {
         itemCount: 14,
         itemBuilder: (context, index) {
           if (index == 13) {
+            _elapsedTime = DateTime.now().difference(_startTime!); // Stop timer
             return InterestSummaryPage(
               interestSelections: _interestSelections,
+              elapsedTime: _elapsedTime!,
             );
           }
 
@@ -129,7 +141,7 @@ class PageContent extends StatelessWidget {
   final bool isCodeCorrect;
   final ValueChanged<String>? onCodeChanged;
   final ValueChanged<bool>? onInterestSelected;
-  final bool? selectedInterest; 
+  final bool? selectedInterest;
 
   const PageContent({
     super.key,
@@ -250,6 +262,7 @@ class PageContent extends StatelessWidget {
 
 class InterestSummaryPage extends StatelessWidget {
   final List<bool?> interestSelections;
+  final Duration elapsedTime;
 
   final List<String> interestPageNames = [
     "Bengal Bots",
@@ -260,7 +273,8 @@ class InterestSummaryPage extends StatelessWidget {
     "LSU Career Center Office",
   ];
 
-  InterestSummaryPage({super.key, required this.interestSelections});
+  InterestSummaryPage(
+      {super.key, required this.interestSelections, required this.elapsedTime});
 
   @override
   Widget build(BuildContext context) {
@@ -269,7 +283,7 @@ class InterestSummaryPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/page_14.jpg', 
+              'assets/page_14.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -279,8 +293,8 @@ class InterestSummaryPage extends StatelessWidget {
               children: [
                 const Text("Interest Summary",
                     style: TextStyle(
-                      fontSize: 28, 
-                      fontWeight: FontWeight.bold, 
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
                     )),
                 for (int i = 0; i < interestSelections.length; i++)
@@ -292,10 +306,19 @@ class InterestSummaryPage extends StatelessWidget {
                     ),
                   ),
                 const SizedBox(height: 20),
+                Text(
+                  "Total Tour Time: ${elapsedTime.inMinutes} min ${elapsedTime.inSeconds % 60} sec",
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 20),
                 const Text(
                   "Thank you for participating in the scavenger hunt!",
                   style: TextStyle(
-                    fontSize: 20, 
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
