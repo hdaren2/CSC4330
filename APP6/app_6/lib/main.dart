@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 void main() {
   runApp(const MyApp());
@@ -157,105 +156,115 @@ class PageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.asset(
-          'assets/page_${index + 1}.jpg',
-          fit: BoxFit.cover,
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF461D7C),
+        title: const Text(
+          'PFT Scavenger Hunt',
+          style: TextStyle(color: Colors.white),
         ),
-        Container(
-          color: Colors.black.withOpacity(0.3),
-        ),
-        Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              if (inputController != null)
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: TextField(
-                    controller: inputController,
-                    keyboardType: TextInputType.number,
-                    maxLength: 4,
-                    style: const TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      counterText: '',
-                      filled: true,
-                      fillColor: Colors.white.withOpacity(0.3),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: BorderSide.none,
-                      ),
-                      hintText: 'Enter 4-digit room number',
-                      hintStyle: const TextStyle(color: Colors.white70),
-                    ),
-                    onChanged: onCodeChanged,
+        centerTitle: true,
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/page_${index + 1}.jpg',
+            fit: BoxFit.cover,
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.3),
+          ),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  if (index > 0)
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.previousPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      },
-                      child: const Text('Previous'),
+                if (inputController != null)
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: TextField(
+                      controller: inputController,
+                      keyboardType: TextInputType.number,
+                      maxLength: 4,
+                      style: const TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        counterText: '',
+                        filled: true,
+                        fillColor: Colors.white.withOpacity(0.3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                        hintText: 'Enter 4-digit room number',
+                        hintStyle: const TextStyle(color: Colors.white70),
+                      ),
+                      onChanged: onCodeChanged,
                     ),
-                  if (isCodeCorrect || index == 0)
-                    ElevatedButton(
-                      onPressed: () {
-                        controller.nextPage(
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInOut,
-                        );
-                      },
-                      child: const Text('Continue'),
-                    ),
-                ],
-              ),
-              if (onInterestSelected != null)
+                  ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    IconButton(
-                      icon: Icon(Icons.thumb_up,
-                          color: selectedInterest == true
-                              ? Colors.green
-                              : Colors.white),
-                      onPressed: () => onInterestSelected!(true),
-                    ),
-                    const Text('Interested',
-                        style: TextStyle(color: Colors.white)),
-                    IconButton(
-                      icon: Icon(Icons.thumb_down,
-                          color: selectedInterest == false
-                              ? Colors.red
-                              : Colors.white),
-                      onPressed: () => onInterestSelected!(false),
-                    ),
-                    const Text('Not Interested',
-                        style: TextStyle(color: Colors.white)),
+                    if (index > 0)
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.previousPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        child: const Text('Previous'),
+                      ),
+                    if (isCodeCorrect || index == 0)
+                      ElevatedButton(
+                        onPressed: () {
+                          controller.nextPage(
+                            duration: const Duration(milliseconds: 500),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        child: const Text('Continue'),
+                      ),
                   ],
                 ),
-            ],
+                if (onInterestSelected != null)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.thumb_up,
+                            color: selectedInterest == true
+                                ? Colors.green
+                                : Colors.white),
+                        onPressed: () => onInterestSelected!(true),
+                      ),
+                      const Text('Interested',
+                          style: TextStyle(color: Colors.white)),
+                      IconButton(
+                        icon: Icon(Icons.thumb_down,
+                            color: selectedInterest == false
+                                ? Colors.red
+                                : Colors.white),
+                        onPressed: () => onInterestSelected!(false),
+                      ),
+                      const Text('Not Interested',
+                          style: TextStyle(color: Colors.white)),
+                    ],
+                  ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -279,6 +288,14 @@ class InterestSummaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF461D7C),
+        title: const Text(
+          'PFT Scavenger Hunt',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
       body: Stack(
         children: [
           Positioned.fill(
