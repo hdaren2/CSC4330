@@ -30,10 +30,23 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
+  int _currentHuntPage = 0;
+  
+  // Hunt state variables
+  final List<TextEditingController> _controllers = List.generate(6, (index) => TextEditingController());
+  final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
+  final List<bool?> _interestSelections = List.generate(6, (index) => null);
+  DateTime? _startTime;
+  Duration? _elapsedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTime = DateTime.now();
+  }
 
   final List<Widget> _pages = [
     const MapPage(),
-    const PageNavigator(),
   ];
 
   void _onItemTapped(int index) {
@@ -42,10 +55,35 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  void _onHuntPageChanged(int page) {
+    setState(() {
+      _currentHuntPage = page;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: _selectedIndex == 0 
+          ? _pages[0]
+          : PageNavigator(
+              controllers: _controllers,
+              isCodeCorrect: _isCodeCorrect,
+              interestSelections: _interestSelections,
+              startTime: _startTime,
+              initialPage: _currentHuntPage,
+              onPageChanged: _onHuntPageChanged,
+              onCodeCorrectChanged: (index, value) {
+                setState(() {
+                  _isCodeCorrect[index] = value;
+                });
+              },
+              onInterestSelectionChanged: (index, value) {
+                setState(() {
+                  _interestSelections[index] = value;
+                });
+              },
+            ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -86,7 +124,10 @@ class MapPage extends StatelessWidget {
         children: [
           Image.asset(
             'assets/pftmap.jpg',
-            fit: BoxFit.cover,
+            fit: BoxFit.contain,
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.2),
           ),
         ],
       ),
@@ -95,19 +136,53 @@ class MapPage extends StatelessWidget {
 }
 
 class PageNavigator extends StatefulWidget {
-  const PageNavigator({super.key});
+  final List<TextEditingController> controllers;
+  final List<bool> isCodeCorrect;
+  final List<bool?> interestSelections;
+  final DateTime? startTime;
+  final int initialPage;
+  final Function(int) onPageChanged;
+  final Function(int, bool) onCodeCorrectChanged;
+  final Function(int, bool?) onInterestSelectionChanged;
+
+  const PageNavigator({
+    super.key,
+    required this.controllers,
+    required this.isCodeCorrect,
+    required this.interestSelections,
+    required this.startTime,
+    required this.initialPage,
+    required this.onPageChanged,
+    required this.onCodeCorrectChanged,
+    required this.onInterestSelectionChanged,
+  });
 
   @override
   _PageNavigatorState createState() => _PageNavigatorState();
 }
 
 class _PageNavigatorState extends State<PageNavigator> {
-  final PageController _controller = PageController();
-  final List<TextEditingController> _controllers =
-      List.generate(6, (index) => TextEditingController());
-  final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
+  late final PageController _controller;
 
-  final List<bool?> _interestSelections = List.generate(6, (index) => null);
+  @override
+  void initState() {
+    super.initState();
+    _controller = PageController(initialPage: widget.initialPage);
+  }
+
+  @override
+  void didUpdateWidget(PageNavigator oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialPage != widget.initialPage) {
+      _controller.jumpToPage(widget.initialPage);
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   final List<String> _correctCodes = [
     "1344",
@@ -134,32 +209,17 @@ class _PageNavigatorState extends State<PageNavigator> {
     "Final Interest Summary"
   ];
 
-  DateTime? _startTime;
-  Duration? _elapsedTime;
-
-  @override
-  void initState() {
-    super.initState();
-    _startTime = DateTime.now(); // Start timer when app opens
-  }
-
   void _validateCode(int index, String value) {
     if (value == _correctCodes[index ~/ 2]) {
-      setState(() {
-        _isCodeCorrect[index ~/ 2] = true;
-      });
+      widget.onCodeCorrectChanged(index ~/ 2, true);
     } else {
-      setState(() {
-        _isCodeCorrect[index ~/ 2] = false;
-      });
+      widget.onCodeCorrectChanged(index ~/ 2, false);
     }
   }
 
   void _setInterest(int index, bool interested) {
-    if ((index - 1) ~/ 2 < _interestSelections.length) {
-      setState(() {
-        _interestSelections[(index - 1) ~/ 2] = interested;
-      });
+    if ((index - 1) ~/ 2 < widget.interestSelections.length) {
+      widget.onInterestSelectionChanged((index - 1) ~/ 2, interested);
     }
   }
 
@@ -170,12 +230,13 @@ class _PageNavigatorState extends State<PageNavigator> {
         controller: _controller,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: 14,
+        onPageChanged: widget.onPageChanged,
         itemBuilder: (context, index) {
           if (index == 13) {
-            _elapsedTime = DateTime.now().difference(_startTime!); // Stop timer
+            Duration elapsedTime = DateTime.now().difference(widget.startTime!);
             return InterestSummaryPage(
-              interestSelections: _interestSelections,
-              elapsedTime: _elapsedTime!,
+              interestSelections: widget.interestSelections,
+              elapsedTime: elapsedTime,
             );
           }
 
@@ -183,21 +244,19 @@ class _PageNavigatorState extends State<PageNavigator> {
             index: index,
             title: _pageTitles[index],
             controller: _controller,
-            inputController: index % 2 == 1 ? _controllers[index ~/ 2] : null,
-            isCodeCorrect: index % 2 == 1 ? _isCodeCorrect[index ~/ 2] : true,
-            onCodeChanged:
-                index % 2 == 1 ? (value) => _validateCode(index, value) : null,
-            selectedInterest: ((index - 1) ~/ 2 < _interestSelections.length &&
+            inputController: index % 2 == 1 ? widget.controllers[index ~/ 2] : null,
+            isCodeCorrect: index % 2 == 1 ? widget.isCodeCorrect[index ~/ 2] : true,
+            onCodeChanged: index % 2 == 1 ? (value) => _validateCode(index, value) : null,
+            selectedInterest: ((index - 1) ~/ 2 < widget.interestSelections.length &&
                     index % 2 == 0 &&
                     index != 0)
-                ? _interestSelections[(index - 1) ~/ 2]
+                ? widget.interestSelections[(index - 1) ~/ 2]
                 : null,
-            onInterestSelected:
-                ((index - 1) ~/ 2 < _interestSelections.length &&
-                        index % 2 == 0 &&
-                        index != 0)
-                    ? (interested) => _setInterest(index, interested)
-                    : null,
+            onInterestSelected: ((index - 1) ~/ 2 < widget.interestSelections.length &&
+                    index % 2 == 0 &&
+                    index != 0)
+                ? (interested) => _setInterest(index, interested)
+                : null,
           );
         },
       ),
