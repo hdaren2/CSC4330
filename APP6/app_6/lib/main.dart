@@ -58,7 +58,9 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF461D7C),
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
         onTap: _onItemTapped,
       ),
     );
@@ -70,10 +72,23 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Map View Coming Soon',
-        style: TextStyle(fontSize: 24),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF461D7C),
+        title: const Text(
+          'PFT Scavenger Hunt',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/pftmap.jpg',
+            fit: BoxFit.cover,
+          ),
+        ],
       ),
     );
   }
