@@ -31,9 +31,10 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   int _currentHuntPage = 0;
-  
+
   // Hunt state variables
-  final List<TextEditingController> _controllers = List.generate(6, (index) => TextEditingController());
+  final List<TextEditingController> _controllers =
+      List.generate(6, (index) => TextEditingController());
   final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
   final List<bool?> _interestSelections = List.generate(6, (index) => null);
   DateTime? _startTime;
@@ -64,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _selectedIndex == 0 
+      body: _selectedIndex == 0
           ? _pages[0]
           : PageNavigator(
               controllers: _controllers,
@@ -244,19 +245,24 @@ class _PageNavigatorState extends State<PageNavigator> {
             index: index,
             title: _pageTitles[index],
             controller: _controller,
-            inputController: index % 2 == 1 ? widget.controllers[index ~/ 2] : null,
-            isCodeCorrect: index % 2 == 1 ? widget.isCodeCorrect[index ~/ 2] : true,
-            onCodeChanged: index % 2 == 1 ? (value) => _validateCode(index, value) : null,
-            selectedInterest: ((index - 1) ~/ 2 < widget.interestSelections.length &&
-                    index % 2 == 0 &&
-                    index != 0)
-                ? widget.interestSelections[(index - 1) ~/ 2]
-                : null,
-            onInterestSelected: ((index - 1) ~/ 2 < widget.interestSelections.length &&
-                    index % 2 == 0 &&
-                    index != 0)
-                ? (interested) => _setInterest(index, interested)
-                : null,
+            inputController:
+                index % 2 == 1 ? widget.controllers[index ~/ 2] : null,
+            isCodeCorrect:
+                index % 2 == 1 ? widget.isCodeCorrect[index ~/ 2] : true,
+            onCodeChanged:
+                index % 2 == 1 ? (value) => _validateCode(index, value) : null,
+            selectedInterest:
+                ((index - 1) ~/ 2 < widget.interestSelections.length &&
+                        index % 2 == 0 &&
+                        index != 0)
+                    ? widget.interestSelections[(index - 1) ~/ 2]
+                    : null,
+            onInterestSelected:
+                ((index - 1) ~/ 2 < widget.interestSelections.length &&
+                        index % 2 == 0 &&
+                        index != 0)
+                    ? (interested) => _setInterest(index, interested)
+                    : null,
           );
         },
       ),
@@ -322,25 +328,29 @@ class PageContent extends StatelessWidget {
                 ),
                 if (inputController != null)
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: inputController,
-                      keyboardType: TextInputType.number,
-                      maxLength: 4,
-                      style: const TextStyle(color: Colors.white),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecoration(
-                        counterText: '',
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.3),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide.none,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 16.0),
+                    child: SizedBox(
+                      width: 300,
+                      child: TextField(
+                        controller: inputController,
+                        keyboardType: TextInputType.number,
+                        maxLength: 4,
+                        style: const TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          filled: true,
+                          fillColor: Colors.white.withOpacity(0.3),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide.none,
+                          ),
+                          hintText: 'Enter 4-digit room number',
+                          hintStyle: const TextStyle(color: Colors.white70),
                         ),
-                        hintText: 'Enter 4-digit room number',
-                        hintStyle: const TextStyle(color: Colors.white70),
+                        onChanged: onCodeChanged,
                       ),
-                      onChanged: onCodeChanged,
                     ),
                   ),
                 Row(
