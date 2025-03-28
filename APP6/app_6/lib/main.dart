@@ -107,43 +107,38 @@ class _MainScreenState extends State<MainScreen> {
 }
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  final Widget? action;
+
+  const CustomAppBar({super.key, this.action});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(kToolbarHeight),
-      child: Container(
-        color: const Color(0xFF461D7C),
-        child: SafeArea(
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: SizedBox(
-                  width: 150,
-                  child: Image.asset(
-                    'assets/LSUlogo.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-              ),
-              const Expanded(
-                child: Center(
-                  child: Text(
-                    'Patrick F. Taylor Scavenger Hunt',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 150), // Balance the logo on the left
-            ],
+    return AppBar(
+      backgroundColor: const Color(0xFF461D7C),
+      leading: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.0),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Image.asset(
+            'assets/LSUlogo.png',
+            fit: BoxFit.contain,
           ),
         ),
       ),
+      title: const Text(
+        'PFT Scavenger Hunt',
+        style: TextStyle(color: Colors.white),
+      ),
+      centerTitle: true,
+      actions: action != null ? [action!] : null,
     );
   }
 }
@@ -154,12 +149,78 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(
+        action: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF461D7C),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SecondFloorMapPage()),
+              );
+            },
+            child: const Text(
+              'Floor 2',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
           Image.asset(
             'assets/pftmap.jpg',
+            fit: BoxFit.contain,
+          ),
+          Container(
+            color: Colors.black.withOpacity(0.2),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SecondFloorMapPage extends StatelessWidget {
+  const SecondFloorMapPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        action: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: const Color(0xFF461D7C),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'Floor 1',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            'assets/pftmap2.jpg',
             fit: BoxFit.contain,
           ),
           Container(
