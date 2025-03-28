@@ -106,20 +106,47 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      backgroundColor: const Color(0xFF461D7C),
+      leading: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Image.asset(
+            'assets/LSUlogo.png',
+            fit: BoxFit.contain,
+          ),
+        ),
+      ),
+      title: const Text(
+        'PFT Scavenger Hunt',
+        style: TextStyle(color: Colors.white),
+      ),
+      centerTitle: true,
+    );
+  }
+}
+
 class MapPage extends StatelessWidget {
   const MapPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF461D7C),
-        title: const Text(
-          'PFT Scavenger Hunt',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -295,14 +322,7 @@ class PageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF461D7C),
-        title: const Text(
-          'PFT Scavenger Hunt',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -430,14 +450,7 @@ class InterestSummaryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF461D7C),
-        title: const Text(
-          'PFT Scavenger Hunt',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-      ),
+      appBar: const CustomAppBar(),
       body: Stack(
         children: [
           Positioned.fill(
