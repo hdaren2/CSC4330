@@ -134,7 +134,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               const Expanded(
                 child: Center(
                   child: Text(
-                    'PFT Scavenger Hunt',
+                    'Patrick F. Taylor Scavenger Hunt',
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
