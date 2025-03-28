@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'PFT Scavenger Hunt',
+      title: 'Patrick F. Taylor Scavenger Hunt',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -114,28 +114,36 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: const Color(0xFF461D7C),
-      leading: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Image.asset(
-            'assets/LSUlogo.png',
-            fit: BoxFit.contain,
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(kToolbarHeight),
+      child: Container(
+        color: const Color(0xFF461D7C),
+        child: SafeArea(
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: SizedBox(
+                  width: 150,
+                  child: Image.asset(
+                    'assets/LSUlogo.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              const Expanded(
+                child: Center(
+                  child: Text(
+                    'PFT Scavenger Hunt',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 150), // Balance the logo on the left
+            ],
           ),
         ),
       ),
-      title: const Text(
-        'PFT Scavenger Hunt',
-        style: TextStyle(color: Colors.white),
-      ),
-      centerTitle: true,
     );
   }
 }
