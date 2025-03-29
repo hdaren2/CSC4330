@@ -127,15 +127,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF461D7C),
+      leadingWidth: 150,
       leading: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.0),
-            borderRadius: BorderRadius.circular(8),
-          ),
+        padding: const EdgeInsets.only(left: 8.0),
+        child: SizedBox(
+          width: 150,
+          height: 75,
           child: Image.asset(
             'assets/LSUlogo.png',
             fit: BoxFit.contain,
@@ -143,7 +140,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: const Text(
-        'Patrick F. Taylor Scavenger Hunt',
+        'Patrick F. Taylor Hall Scavenger Hunt',
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
