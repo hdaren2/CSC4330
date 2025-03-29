@@ -177,11 +177,11 @@ class MapPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/pftmap.jpg',
+            'assets/pftmap.png',
             fit: BoxFit.contain,
           ),
           Container(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0),
           ),
         ],
       ),
@@ -220,11 +220,11 @@ class SecondFloorMapPage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/pftmap2.jpg',
+            'assets/pftmap2.png',
             fit: BoxFit.contain,
           ),
           Container(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0),
           ),
         ],
       ),
