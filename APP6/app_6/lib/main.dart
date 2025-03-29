@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Patrick F. Taylor Scavenger Hunt',
+      title: 'Patrick F. Taylor Hall Scavenger Hunt',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -44,6 +44,15 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _startTime = DateTime.now();
+  }
+
+  @override
+  void dispose() {
+    // Dispose of all text controllers
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   final List<Widget> _pages = [
@@ -134,7 +143,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: const Text(
-        'PFT Scavenger Hunt',
+        'Patrick F. Taylor Scavenger Hunt',
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
@@ -163,11 +172,12 @@ class MapPage extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SecondFloorMapPage()),
+                MaterialPageRoute(
+                    builder: (context) => const SecondFloorMapPage()),
               );
             },
             child: const Text(
-              'Floor 2',
+              'Go to Floor 2',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -182,6 +192,25 @@ class MapPage extends StatelessWidget {
           ),
           Container(
             color: Colors.black.withOpacity(0),
+          ),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF461D7C),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'Floor 1 Map',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -210,7 +239,7 @@ class SecondFloorMapPage extends StatelessWidget {
               Navigator.pop(context);
             },
             child: const Text(
-              'Floor 1',
+              'Go to Floor 1',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
@@ -223,8 +252,24 @@ class SecondFloorMapPage extends StatelessWidget {
             'assets/pftmap2.png',
             fit: BoxFit.contain,
           ),
-          Container(
-            color: Colors.black.withOpacity(0),
+          Positioned(
+            top: 20,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF461D7C),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'Floor 2 Map',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ),
         ],
       ),
@@ -290,7 +335,7 @@ class _PageNavigatorState extends State<PageNavigator> {
     "2108"
   ];
   final List<String> _pageTitles = [
-    "Welcome to the Patrick F. Taylor Scavenger Hunt.",
+    "Welcome to the Patrick F. Taylor Hall Scavenger Hunt.",
     "Please enter the correct room number to proceed.\nYou must go to the room of robotics, with an orange glow",
     "Welcome to the home of the Bengal Bots, LSU's Robotics Club!",
     "Need a quick bite, where coffee is in sight",
