@@ -187,24 +187,18 @@ class MapPage extends StatelessWidget {
             'assets/pftmap.png',
             fit: BoxFit.contain,
           ),
-          Container(
-            color: Colors.black.withOpacity(0),
-          ),
           Positioned(
             top: 20,
             left: 20,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF461D7C),
-                borderRadius: BorderRadius.circular(8),
-              ),
               child: const Text(
                 'Floor 1 Map',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
@@ -254,16 +248,13 @@ class SecondFloorMapPage extends StatelessWidget {
             left: 20,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF461D7C),
-                borderRadius: BorderRadius.circular(8),
-              ),
               child: const Text(
                 'Floor 2 Map',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
                 ),
               ),
             ),
