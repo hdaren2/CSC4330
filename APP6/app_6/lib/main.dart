@@ -73,10 +73,6 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  final List<Widget> _pages = [
-    const MapPage(),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -91,27 +87,39 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      PageNavigator(
+        controllers: _controllers,
+        isCodeCorrect: _isCodeCorrect,
+        interestSelections: _interestSelections,
+        startTime: _startTime,
+        initialPage: _currentHuntPage,
+        onPageChanged: _onHuntPageChanged,
+        onCodeCorrectChanged: (index, value) {
+          setState(() {
+            _isCodeCorrect[index] = value;
+          });
+        },
+        onInterestSelectionChanged: (index, value) {
+          setState(() {
+            _interestSelections[index] = value;
+          });
+        },
+      ),
+      const MapPage(),
+      DiscoveredPlacesPage(
+        isCodeCorrect: _isCodeCorrect,
+        onPageSelected: (pageIndex) {
+          setState(() {
+            _selectedIndex = 0; // Switch to Hunt tab
+            _currentHuntPage = pageIndex; // Set the page index
+          });
+        },
+      ),
+    ];
+
     return Scaffold(
-      body: _selectedIndex == 0
-          ? PageNavigator(
-              controllers: _controllers,
-              isCodeCorrect: _isCodeCorrect,
-              interestSelections: _interestSelections,
-              startTime: _startTime,
-              initialPage: _currentHuntPage,
-              onPageChanged: _onHuntPageChanged,
-              onCodeCorrectChanged: (index, value) {
-                setState(() {
-                  _isCodeCorrect[index] = value;
-                });
-              },
-              onInterestSelectionChanged: (index, value) {
-                setState(() {
-                  _interestSelections[index] = value;
-                });
-              },
-            )
-          : _pages[0],
+      body: pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -121,6 +129,10 @@ class _MainScreenState extends State<MainScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Discovered',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -145,12 +157,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF461D7C),
-      leadingWidth: 150,
+      leadingWidth: 120,
       leading: Padding(
         padding: const EdgeInsets.only(left: 15.0),
         child: SizedBox(
-          width: 150,
-          height: 75,
+          width: 120,
+          height: 60,
           child: Image.asset(
             'assets/LSUlogo.png',
             fit: BoxFit.contain,
@@ -158,8 +170,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: const Text(
-        '',
-        style: TextStyle(color: Colors.white),
+        'Patrick F. Taylor Hall Scavenger Hunt',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       centerTitle: true,
       actions: action != null ? [action!] : null,
@@ -726,6 +742,144 @@ class InterestSummaryPage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DiscoveredPlacesPage extends StatelessWidget {
+  final List<bool> isCodeCorrect;
+  final Function(int) onPageSelected;
+
+  const DiscoveredPlacesPage({
+    super.key,
+    required this.isCodeCorrect,
+    required this.onPageSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> places = [
+      {
+        "title": "Bengal Bots",
+        "room": "Room 1344",
+        "description": "LSU's Robotics Club",
+        "pageIndex": 2,
+      },
+      {
+        "title": "Panera Bread",
+        "room": "Room 1375",
+        "description": "Food service of choice at PFT",
+        "pageIndex": 4,
+      },
+      {
+        "title": "Chevron Center",
+        "room": "Room 1269",
+        "description": "Where blue and red meet",
+        "pageIndex": 6,
+      },
+      {
+        "title": "PFT Sponsors",
+        "room": "Room 1200",
+        "description": "Proud sponsors of our beloved PFT",
+        "pageIndex": 8,
+      },
+      {
+        "title": "Traffic Research Lab",
+        "room": "Room 2215",
+        "description": "Traffic Research and Visualization Engineering Lab",
+        "pageIndex": 10,
+      },
+      {
+        "title": "Career Center",
+        "room": "Room 2108",
+        "description": "Lisa Hibner's office",
+        "pageIndex": 12,
+      },
+      {
+        "title": "Robotics Lab",
+        "room": "Room 1300",
+        "description": "Where creativity is crawling",
+        "pageIndex": 14,
+      },
+      {
+        "title": "The Commons",
+        "room": "Room 1278",
+        "description": "Where students sit, study, and eat",
+        "pageIndex": 16,
+      },
+      {
+        "title": "Mechanical Engineering Lab",
+        "room": "Room 1354",
+        "description": "Where sparks of innovation fly",
+        "pageIndex": 18,
+      },
+      {
+        "title": "Building Information Modeling Lab",
+        "room": "Room 2348",
+        "description":
+            "Where construction management students can virtually visit building sites",
+        "pageIndex": 20,
+      },
+    ];
+
+    return Scaffold(
+      appBar: const CustomAppBar(),
+      body: ListView.builder(
+        itemCount: places.length,
+        itemBuilder: (context, index) {
+          if (!isCodeCorrect[index]) {
+            return const SizedBox.shrink();
+          }
+          return _buildPlaceTile(
+            context,
+            places[index]["title"],
+            places[index]["room"],
+            places[index]["description"],
+            places[index]["pageIndex"],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPlaceTile(
+    BuildContext context,
+    String title,
+    String roomNumber,
+    String description,
+    int pageIndex,
+  ) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              roomNumber,
+              style: const TextStyle(
+                color: Color(0xFF461D7C),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            Text(
+              description,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ],
+        ),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          onPageSelected(pageIndex);
+        },
       ),
     );
   }
