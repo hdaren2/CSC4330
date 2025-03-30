@@ -52,9 +52,9 @@ class _MainScreenState extends State<MainScreen> {
 
   // Hunt state variables
   final List<TextEditingController> _controllers =
-      List.generate(6, (index) => TextEditingController());
-  final List<bool> _isCodeCorrect = List.generate(6, (index) => false);
-  final List<bool?> _interestSelections = List.generate(6, (index) => null);
+      List.generate(10, (index) => TextEditingController());
+  final List<bool> _isCodeCorrect = List.generate(10, (index) => false);
+  final List<bool?> _interestSelections = List.generate(10, (index) => null);
   DateTime? _startTime;
   Duration? _elapsedTime;
 
@@ -404,7 +404,11 @@ class _PageNavigatorState extends State<PageNavigator> {
     "1269",
     "1200",
     "2215",
-    "2108"
+    "2108",
+    "1300",
+    "1278",
+    "1354",
+    "2348"
   ];
   final List<String> _pageTitles = [
     "Welcome to the Patrick F. Taylor Hall Scavenger Hunt.",
@@ -420,6 +424,14 @@ class _PageNavigatorState extends State<PageNavigator> {
     "Here we find the Traffic Research and Visualization Engineering Lab",
     "For building your resume with pros who care, near studying people in a quiet chair",
     "Welcome to Lisa Hibner's office, where you can troubleshoot career problems and build your resume",
+    "Here you will find vehicles, crawlers, spiders, and robots of all kinds",
+    "Welcome to the Robotics Lab, where creativity is crawling",
+    "After getting something to eat, you look for a seat.",
+    "Welcome to the Commons, where students sit, study, and eat.",
+    "Mechanics in motion, and the lab is in sight",
+    "Welcome to the Mechanical Engineering Lab, where sparks of innovation fly",
+    "Screens galore, they are looking at buildings on the second floor",
+    "Welcome to Building Information Modeling Lab, where construction management students can virtually visit building sites.",
     "Final Interest Summary"
   ];
 
@@ -443,10 +455,10 @@ class _PageNavigatorState extends State<PageNavigator> {
       body: PageView.builder(
         controller: _controller,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: 14,
+        itemCount: 22,
         onPageChanged: widget.onPageChanged,
         itemBuilder: (context, index) {
-          if (index == 13) {
+          if (index == 21) {
             Duration elapsedTime = DateTime.now().difference(widget.startTime!);
             return InterestSummaryPage(
               interestSelections: widget.interestSelections,
@@ -454,6 +466,11 @@ class _PageNavigatorState extends State<PageNavigator> {
               controller: _controller,
             );
           }
+
+          bool showInterestSelection =
+              (index - 1) ~/ 2 < widget.interestSelections.length &&
+                  index % 2 == 0 &&
+                  index != 0;
 
           return PageContent(
             index: index,
@@ -465,18 +482,12 @@ class _PageNavigatorState extends State<PageNavigator> {
                 index % 2 == 1 ? widget.isCodeCorrect[index ~/ 2] : true,
             onCodeChanged:
                 index % 2 == 1 ? (value) => _validateCode(index, value) : null,
-            selectedInterest:
-                ((index - 1) ~/ 2 < widget.interestSelections.length &&
-                        index % 2 == 0 &&
-                        index != 0)
-                    ? widget.interestSelections[(index - 1) ~/ 2]
-                    : null,
-            onInterestSelected:
-                ((index - 1) ~/ 2 < widget.interestSelections.length &&
-                        index % 2 == 0 &&
-                        index != 0)
-                    ? (interested) => _setInterest(index, interested)
-                    : null,
+            selectedInterest: showInterestSelection
+                ? widget.interestSelections[(index - 1) ~/ 2]
+                : null,
+            onInterestSelected: showInterestSelection
+                ? (interested) => _setInterest(index, interested)
+                : null,
           );
         },
       ),
@@ -640,6 +651,10 @@ class InterestSummaryPage extends StatelessWidget {
     "PFT Sponsors",
     "Traffic Research Lab",
     "LSU Career Center Office",
+    "Robotics Lab",
+    "The Commons",
+    "Mechanical Engineering Lab",
+    "Building Information Modeling Lab"
   ];
 
   InterestSummaryPage({
@@ -657,7 +672,7 @@ class InterestSummaryPage extends StatelessWidget {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/page_14.jpg',
+              'assets/page_22.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -675,20 +690,20 @@ class InterestSummaryPage extends StatelessWidget {
                   Text(
                     "${interestPageNames[i]}: ${interestSelections[i] == null ? 'No Selection' : interestSelections[i]! ? 'Interested' : 'Not Interested'}",
                     style: const TextStyle(
-                      fontSize: 18,
+                      fontSize: 14,
                       color: Colors.white,
                     ),
                   ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
                 Text(
                   "Total Tour Time: ${elapsedTime.inMinutes} min ${elapsedTime.inSeconds % 60} sec",
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 18),
+                const SizedBox(height: 14),
                 const Text(
                   "Thank you for participating in the scavenger hunt!",
                   style: TextStyle(
