@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform;
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Set preferred orientations for iOS
+  if (Platform.isIOS) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
   runApp(const MyApp());
 }
 
@@ -15,6 +28,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        // Add iOS-specific styling
+        platform: TargetPlatform.iOS,
+        cupertinoOverrideTheme: const CupertinoThemeData(
+          primaryColor: Color(0xFF461D7C),
+        ),
       ),
       home: const MainScreen(),
     );
@@ -75,8 +93,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _selectedIndex == 0
-          ? _pages[0]
-          : PageNavigator(
+          ? PageNavigator(
               controllers: _controllers,
               isCodeCorrect: _isCodeCorrect,
               interestSelections: _interestSelections,
@@ -93,16 +110,17 @@ class _MainScreenState extends State<MainScreen> {
                   _interestSelections[index] = value;
                 });
               },
-            ),
+            )
+          : _pages[0],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.search),
             label: 'Hunt',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
           ),
         ],
         currentIndex: _selectedIndex,
@@ -140,52 +158,88 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       title: const Text(
-        'Patrick F. Taylor Hall Scavenger Hunt',
+        '',
         style: TextStyle(color: Colors.white),
       ),
       centerTitle: true,
       actions: action != null ? [action!] : null,
+      elevation: Platform.isIOS ? 0.0 : 4.0,
     );
   }
 }
 
-class MapPage extends StatelessWidget {
+class MapMarker {
+  final Offset position;
+  final String label;
+  final DateTime timestamp;
+
+  MapMarker({
+    required this.position,
+    required this.label,
+    required this.timestamp,
+  });
+}
+
+class MapPage extends StatefulWidget {
   const MapPage({super.key});
+
+  @override
+  State<MapPage> createState() => _MapPageState();
+}
+
+class _MapPageState extends State<MapPage> {
+  final TransformationController _transformationController =
+      TransformationController();
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        action: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFF461D7C),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+        action: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: const Color(0xFF461D7C),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SecondFloorMapPage()),
+                  );
+                },
+                child: const Text(
+                  'Go to Floor 2',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const SecondFloorMapPage()),
-              );
-            },
-            child: const Text(
-              'Go to Floor 2',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
+          ],
         ),
       ),
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Image.asset(
-            'assets/pftmap.png',
-            fit: BoxFit.contain,
+          InteractiveViewer(
+            transformationController: _transformationController,
+            minScale: 0.5,
+            maxScale: 4.0,
+            child: Image.asset(
+              'assets/pftmap.png',
+              fit: BoxFit.contain,
+            ),
           ),
           Positioned(
             top: 20,
@@ -209,57 +263,87 @@ class MapPage extends StatelessWidget {
   }
 }
 
-class SecondFloorMapPage extends StatelessWidget {
+class SecondFloorMapPage extends StatefulWidget {
   const SecondFloorMapPage({super.key});
 
   @override
+  State<SecondFloorMapPage> createState() => _SecondFloorMapPageState();
+}
+
+class _SecondFloorMapPageState extends State<SecondFloorMapPage> {
+  final TransformationController _transformationController =
+      TransformationController();
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        action: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.white,
-              foregroundColor: const Color(0xFF461D7C),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(
+          action: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: const Color(0xFF461D7C),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    'Go to Floor 1',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'Go to Floor 1',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            ],
           ),
         ),
-      ),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            'assets/pftmap2.png',
-            fit: BoxFit.contain,
-          ),
-          Positioned(
-            top: 20,
-            left: 20,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: const Text(
-                'Floor 2 Map',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            InteractiveViewer(
+              transformationController: _transformationController,
+              minScale: 0.5,
+              maxScale: 4.0,
+              child: Image.asset(
+                'assets/pftmap2.png',
+                fit: BoxFit.contain,
+              ),
+            ),
+            Positioned(
+              top: 20,
+              left: 20,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: const Text(
+                  'Floor 2 Map',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -367,6 +451,7 @@ class _PageNavigatorState extends State<PageNavigator> {
             return InterestSummaryPage(
               interestSelections: widget.interestSelections,
               elapsedTime: elapsedTime,
+              controller: _controller,
             );
           }
 
@@ -423,111 +508,121 @@ class PageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image.asset(
-            'assets/page_${index + 1}.jpg',
-            fit: BoxFit.cover,
-          ),
-          Container(
-            color: Colors.black.withOpacity(0.3),
-          ),
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                if (inputController != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 32.0, vertical: 16.0),
-                    child: SizedBox(
-                      width: 300,
-                      child: TextField(
-                        controller: inputController,
-                        keyboardType: TextInputType.number,
-                        maxLength: 4,
-                        style: const TextStyle(color: Colors.white),
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          counterText: '',
-                          filled: true,
-                          fillColor: Colors.white.withOpacity(0.3),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide.none,
-                          ),
-                          hintText: 'Enter 4-digit room number',
-                          hintStyle: const TextStyle(color: Colors.white70),
-                        ),
-                        onChanged: onCodeChanged,
-                      ),
+    return GestureDetector(
+      onTap: () {
+        // Dismiss keyboard when tapping outside the text field
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: const CustomAppBar(),
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'assets/page_${index + 1}.jpg',
+              fit: BoxFit.cover,
+            ),
+            Container(
+              color: Colors.black.withOpacity(0.3),
+            ),
+            Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (index > 0)
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.previousPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        child: const Text('Previous'),
+                  if (inputController != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32.0, vertical: 16.0),
+                      child: SizedBox(
+                        width: 300,
+                        child: TextField(
+                          controller: inputController,
+                          keyboardType: TextInputType.number,
+                          maxLength: 4,
+                          style: const TextStyle(color: Colors.white),
+                          textAlign: TextAlign.center,
+                          decoration: InputDecoration(
+                            counterText: '',
+                            filled: true,
+                            fillColor: Colors.white.withOpacity(0.3),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide.none,
+                            ),
+                            hintText: 'Enter 4-digit room number',
+                            hintStyle: const TextStyle(color: Colors.white70),
+                          ),
+                          onChanged: onCodeChanged,
+                        ),
                       ),
-                    if (isCodeCorrect || index == 0)
-                      ElevatedButton(
-                        onPressed: () {
-                          controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        },
-                        child: const Text('Continue'),
-                      ),
-                  ],
-                ),
-                if (onInterestSelected != null)
+                    ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.thumb_up,
-                            color: selectedInterest == true
-                                ? Colors.green
-                                : Colors.white),
-                        onPressed: () => onInterestSelected!(true),
-                      ),
-                      const Text('Interested',
-                          style: TextStyle(color: Colors.white)),
-                      IconButton(
-                        icon: Icon(Icons.thumb_down,
-                            color: selectedInterest == false
-                                ? Colors.red
-                                : Colors.white),
-                        onPressed: () => onInterestSelected!(false),
-                      ),
-                      const Text('Not Interested',
-                          style: TextStyle(color: Colors.white)),
+                      if (index > 0)
+                        ElevatedButton(
+                          onPressed: () {
+                            // Dismiss keyboard before navigation
+                            FocusScope.of(context).unfocus();
+                            controller.previousPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: const Text('Previous'),
+                        ),
+                      if (isCodeCorrect || index == 0)
+                        ElevatedButton(
+                          onPressed: () {
+                            // Dismiss keyboard before navigation
+                            FocusScope.of(context).unfocus();
+                            controller.nextPage(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: const Text('Continue'),
+                        ),
                     ],
                   ),
-              ],
+                  if (onInterestSelected != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.thumb_up,
+                              color: selectedInterest == true
+                                  ? Colors.green
+                                  : Colors.white),
+                          onPressed: () => onInterestSelected!(true),
+                        ),
+                        const Text('Interested',
+                            style: TextStyle(color: Colors.white)),
+                        IconButton(
+                          icon: Icon(Icons.thumb_down,
+                              color: selectedInterest == false
+                                  ? Colors.red
+                                  : Colors.white),
+                          onPressed: () => onInterestSelected!(false),
+                        ),
+                        const Text('Not Interested',
+                            style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -536,6 +631,7 @@ class PageContent extends StatelessWidget {
 class InterestSummaryPage extends StatelessWidget {
   final List<bool?> interestSelections;
   final Duration elapsedTime;
+  final PageController controller;
 
   final List<String> interestPageNames = [
     "Bengal Bots",
@@ -546,8 +642,12 @@ class InterestSummaryPage extends StatelessWidget {
     "LSU Career Center Office",
   ];
 
-  InterestSummaryPage(
-      {super.key, required this.interestSelections, required this.elapsedTime});
+  InterestSummaryPage({
+    super.key,
+    required this.interestSelections,
+    required this.elapsedTime,
+    required this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -567,7 +667,7 @@ class InterestSummaryPage extends StatelessWidget {
               children: [
                 const Text("Interest Summary",
                     style: TextStyle(
-                      fontSize: 28,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     )),
@@ -575,27 +675,37 @@ class InterestSummaryPage extends StatelessWidget {
                   Text(
                     "${interestPageNames[i]}: ${interestSelections[i] == null ? 'No Selection' : interestSelections[i]! ? 'Interested' : 'Not Interested'}",
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 18,
                       color: Colors.white,
                     ),
                   ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 18),
                 Text(
                   "Total Tour Time: ${elapsedTime.inMinutes} min ${elapsedTime.inSeconds % 60} sec",
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 18),
+                const Text(
+                  "Thank you for participating in the scavenger hunt!",
+                  style: TextStyle(
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  "Thank you for participating in the scavenger hunt!",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                ElevatedButton(
+                  onPressed: () {
+                    controller.previousPage(
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  child: const Text('Previous'),
                 ),
               ],
             ),

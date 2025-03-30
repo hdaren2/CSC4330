@@ -9,11 +9,29 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		331C808B294A63AB00263BE5 /* RunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 331C807B294A618700263BE5 /* RunnerTests.swift */; };
+		3A4293BB8D6B4E371FE4407A /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4EB7CAA51FEC53C4500E512 /* Pods_Runner.framework */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		B191DA8B2D99955F00CBBB2C /* page_11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA7A2D99955F00CBBB2C /* page_11.jpg */; };
+		B191DA8C2D99955F00CBBB2C /* page_13.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA7B2D99955F00CBBB2C /* page_13.jpg */; };
+		B191DA8D2D99955F00CBBB2C /* page_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA7C2D99955F00CBBB2C /* page_3.jpg */; };
+		B191DA8E2D99955F00CBBB2C /* page_14.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA7D2D99955F00CBBB2C /* page_14.jpg */; };
+		B191DA8F2D99955F00CBBB2C /* pftmap.png in Resources */ = {isa = PBXBuildFile; fileRef = B191DA7E2D99955F00CBBB2C /* pftmap.png */; };
+		B191DA902D99955F00CBBB2C /* page_12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA7F2D99955F00CBBB2C /* page_12.jpg */; };
+		B191DA912D99955F00CBBB2C /* page_8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA802D99955F00CBBB2C /* page_8.jpg */; };
+		B191DA922D99955F00CBBB2C /* page_7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA812D99955F00CBBB2C /* page_7.jpg */; };
+		B191DA932D99955F00CBBB2C /* LSUlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = B191DA822D99955F00CBBB2C /* LSUlogo.png */; };
+		B191DA942D99955F00CBBB2C /* page_9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA832D99955F00CBBB2C /* page_9.jpg */; };
+		B191DA952D99955F00CBBB2C /* page_6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA842D99955F00CBBB2C /* page_6.jpg */; };
+		B191DA962D99955F00CBBB2C /* page_10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA852D99955F00CBBB2C /* page_10.jpg */; };
+		B191DA972D99955F00CBBB2C /* page_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA862D99955F00CBBB2C /* page_2.jpg */; };
+		B191DA982D99955F00CBBB2C /* page_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA872D99955F00CBBB2C /* page_1.jpg */; };
+		B191DA992D99955F00CBBB2C /* pftmap2.png in Resources */ = {isa = PBXBuildFile; fileRef = B191DA882D99955F00CBBB2C /* pftmap2.png */; };
+		B191DA9A2D99955F00CBBB2C /* page_4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA892D99955F00CBBB2C /* page_4.jpg */; };
+		B191DA9B2D99955F00CBBB2C /* page_5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = B191DA8A2D99955F00CBBB2C /* page_5.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,8 +63,10 @@
 		331C807B294A618700263BE5 /* RunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunnerTests.swift; sourceTree = "<group>"; };
 		331C8081294A63A400263BE5 /* RunnerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RunnerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		5BA1B2C04CCF48D6B4A43B16 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		74858FAE1ED2DC5600515810 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7AE831D76964363EA053E0B7 /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -55,6 +75,25 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B191DA7A2D99955F00CBBB2C /* page_11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_11.jpg; path = ../assets/page_11.jpg; sourceTree = "<group>"; };
+		B191DA7B2D99955F00CBBB2C /* page_13.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_13.jpg; path = ../assets/page_13.jpg; sourceTree = "<group>"; };
+		B191DA7C2D99955F00CBBB2C /* page_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_3.jpg; path = ../assets/page_3.jpg; sourceTree = "<group>"; };
+		B191DA7D2D99955F00CBBB2C /* page_14.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_14.jpg; path = ../assets/page_14.jpg; sourceTree = "<group>"; };
+		B191DA7E2D99955F00CBBB2C /* pftmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pftmap.png; path = ../assets/pftmap.png; sourceTree = "<group>"; };
+		B191DA7F2D99955F00CBBB2C /* page_12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_12.jpg; path = ../assets/page_12.jpg; sourceTree = "<group>"; };
+		B191DA802D99955F00CBBB2C /* page_8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_8.jpg; path = ../assets/page_8.jpg; sourceTree = "<group>"; };
+		B191DA812D99955F00CBBB2C /* page_7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_7.jpg; path = ../assets/page_7.jpg; sourceTree = "<group>"; };
+		B191DA822D99955F00CBBB2C /* LSUlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = LSUlogo.png; path = ../assets/LSUlogo.png; sourceTree = "<group>"; };
+		B191DA832D99955F00CBBB2C /* page_9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_9.jpg; path = ../assets/page_9.jpg; sourceTree = "<group>"; };
+		B191DA842D99955F00CBBB2C /* page_6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_6.jpg; path = ../assets/page_6.jpg; sourceTree = "<group>"; };
+		B191DA852D99955F00CBBB2C /* page_10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_10.jpg; path = ../assets/page_10.jpg; sourceTree = "<group>"; };
+		B191DA862D99955F00CBBB2C /* page_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_2.jpg; path = ../assets/page_2.jpg; sourceTree = "<group>"; };
+		B191DA872D99955F00CBBB2C /* page_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_1.jpg; path = ../assets/page_1.jpg; sourceTree = "<group>"; };
+		B191DA882D99955F00CBBB2C /* pftmap2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pftmap2.png; path = ../assets/pftmap2.png; sourceTree = "<group>"; };
+		B191DA892D99955F00CBBB2C /* page_4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_4.jpg; path = ../assets/page_4.jpg; sourceTree = "<group>"; };
+		B191DA8A2D99955F00CBBB2C /* page_5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = page_5.jpg; path = ../assets/page_5.jpg; sourceTree = "<group>"; };
+		BE7B639ED3CEBCC00A2543D2 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		D4EB7CAA51FEC53C4500E512 /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,12 +101,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A4293BB8D6B4E371FE4407A /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02C7949DB53FCFD03F6AC5BD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BE7B639ED3CEBCC00A2543D2 /* Pods-Runner.debug.xcconfig */,
+				5BA1B2C04CCF48D6B4A43B16 /* Pods-Runner.release.xcconfig */,
+				7AE831D76964363EA053E0B7 /* Pods-Runner.profile.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -90,10 +140,29 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				B191DA822D99955F00CBBB2C /* LSUlogo.png */,
+				B191DA872D99955F00CBBB2C /* page_1.jpg */,
+				B191DA862D99955F00CBBB2C /* page_2.jpg */,
+				B191DA7C2D99955F00CBBB2C /* page_3.jpg */,
+				B191DA892D99955F00CBBB2C /* page_4.jpg */,
+				B191DA8A2D99955F00CBBB2C /* page_5.jpg */,
+				B191DA842D99955F00CBBB2C /* page_6.jpg */,
+				B191DA812D99955F00CBBB2C /* page_7.jpg */,
+				B191DA802D99955F00CBBB2C /* page_8.jpg */,
+				B191DA832D99955F00CBBB2C /* page_9.jpg */,
+				B191DA852D99955F00CBBB2C /* page_10.jpg */,
+				B191DA7A2D99955F00CBBB2C /* page_11.jpg */,
+				B191DA7F2D99955F00CBBB2C /* page_12.jpg */,
+				B191DA7B2D99955F00CBBB2C /* page_13.jpg */,
+				B191DA7D2D99955F00CBBB2C /* page_14.jpg */,
+				B191DA7E2D99955F00CBBB2C /* pftmap.png */,
+				B191DA882D99955F00CBBB2C /* pftmap2.png */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
 				331C8082294A63A400263BE5 /* RunnerTests */,
+				02C7949DB53FCFD03F6AC5BD /* Pods */,
+				9D09F02096B380BA07EE8DDD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,6 +190,14 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
+		9D09F02096B380BA07EE8DDD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D4EB7CAA51FEC53C4500E512 /* Pods_Runner.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -145,6 +222,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97C147051CF9000F007C117D /* Build configuration list for PBXNativeTarget "Runner" */;
 			buildPhases = (
+				17F2A122145C23284243FF20 /* [CP] Check Pods Manifest.lock */,
 				9740EEB61CF901F6004384FC /* Run Script */,
 				97C146EA1CF9000F007C117D /* Sources */,
 				97C146EB1CF9000F007C117D /* Frameworks */,
@@ -212,6 +290,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B191DA8B2D99955F00CBBB2C /* page_11.jpg in Resources */,
+				B191DA8C2D99955F00CBBB2C /* page_13.jpg in Resources */,
+				B191DA8D2D99955F00CBBB2C /* page_3.jpg in Resources */,
+				B191DA8E2D99955F00CBBB2C /* page_14.jpg in Resources */,
+				B191DA8F2D99955F00CBBB2C /* pftmap.png in Resources */,
+				B191DA902D99955F00CBBB2C /* page_12.jpg in Resources */,
+				B191DA912D99955F00CBBB2C /* page_8.jpg in Resources */,
+				B191DA922D99955F00CBBB2C /* page_7.jpg in Resources */,
+				B191DA932D99955F00CBBB2C /* LSUlogo.png in Resources */,
+				B191DA942D99955F00CBBB2C /* page_9.jpg in Resources */,
+				B191DA952D99955F00CBBB2C /* page_6.jpg in Resources */,
+				B191DA962D99955F00CBBB2C /* page_10.jpg in Resources */,
+				B191DA972D99955F00CBBB2C /* page_2.jpg in Resources */,
+				B191DA982D99955F00CBBB2C /* page_1.jpg in Resources */,
+				B191DA992D99955F00CBBB2C /* pftmap2.png in Resources */,
+				B191DA9A2D99955F00CBBB2C /* page_4.jpg in Resources */,
+				B191DA9B2D99955F00CBBB2C /* page_5.jpg in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
@@ -222,6 +317,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		17F2A122145C23284243FF20 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Runner-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3B06AD1E1E4923F5004D2608 /* Thin Binary */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -362,13 +479,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = B8M5RFG849;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.app6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hdaren2.pftscavengerhunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -541,13 +659,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = B8M5RFG849;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.app6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hdaren2.pftscavengerhunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -563,13 +682,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				DEVELOPMENT_TEAM = B8M5RFG849;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.app6;
+				PRODUCT_BUNDLE_IDENTIFIER = com.hdaren2.pftscavengerhunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
